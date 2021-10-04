@@ -1,0 +1,32 @@
+.messsage__wrap {
+  display: flex;
+  padding: 4px 20px;
+  align-items: flex-end;
+}
+.messsage__content {
+  display: flex;
+  flex: 1;
+  padding: 0 10px;
+
+  &-input {
+    font-size: 1rem;
+    width: 50%;
+    margin-bottom: 0;
+    .fit-content {
+      border: 1px solid rgb(230, 230, 230);
+      border-radius: 30px;
+      padding: 14px 15px;
+      width: fit-content;
+    }
+  }
+}
+.own {
+  .messsage__content-input {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+  .fit-content {
+    background-color: rgb(240, 240, 240);
+  }
+  flex-direction: row-reverse;
+}

@@ -1,0 +1,82 @@
+.content {
+  overflow-y: scroll;
+
+  height: 100vh;
+  &__container-left {
+    margin-top: 60px;
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+  }
+  &__container-right {
+    margin-top: 110px;
+    
+    height: 100%;
+    display: flex;
+    // display: none;
+    .content__container-right-wrap {
+      position: fixed;
+      display: flex;
+      width: 300px;
+    }
+    &__img-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    &__wrapName {
+      display: flex;
+      margin-left: 24px;
+      flex-direction: column;
+      align-self: center;
+      flex: 1;
+    }
+  }
+
+  .card__image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+.layout__messenger {
+  padding-right: 20px;
+}
+
+@media screen and (max-width: 992px) {
+  //Định dạng của các khối khi màn hình có chiều rộng nhỏ hơn 2000px;
+  .content {
+    &__container-left {
+      padding-left: 0;
+    }
+    &__container-right {
+      display: none;
+    }
+  }
+}
+@media screen and (max-width: 480px) {
+  // Định dạng của các khối khi màn hình có chiều rộng nhỏ hơn 375px;
+  // span={8}
+  // offset={6}
+
+
+  .ant-col-offset-6 {
+    margin-left: 0%;
+  }
+  .ant-col-8 {
+    display: block;
+    flex: none;
+    max-width: 100%;
+  }
+  .card__modal {
+    &__img__wrap{
+      display: none;
+    }
+    &__info {
+      width: 100% !important;
+    }
+  }
+}

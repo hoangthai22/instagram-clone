@@ -1,0 +1,74 @@
+.card__modal {
+  &__wrap {
+    display: flex;
+    height: 100%;
+    position: relative;
+    &__after{
+      font-size: 2rem;
+      position: absolute;
+      top: calc(50% - 1rem);
+      left: -50px;
+      color:  rgb(220, 220, 220);
+      cursor: pointer;
+    }
+    &__before{
+      font-size: 2rem;
+      position: absolute;
+      top: calc(50% - 1rem);
+      right: -50px;
+      color:  rgb(220, 220, 220);
+      cursor: pointer;
+    }
+  }
+  
+  &__img__wrap{
+    width: 70%;
+    height: 100%;
+    align-self: center;
+  }
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius:10px ;
+    border-bottom-left-radius: 10px;
+  }
+  &__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 40%;
+
+    &__header {
+      height: 72px;
+      padding: 8px 12px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgb(220, 220, 220);
+
+      &__right {
+        margin-left: 10px;
+        width: 90%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+    &__content {
+      width: 100%;
+      height:  calc(100% - 192px);
+      overflow-y: scroll;
+      max-height: 400px;
+    }
+    &__footer {
+      width: 100%;
+      border-top: 1px solid rgb(220, 220, 220);
+      height: 140px;
+    }
+  }
+}
+
+.ant-modal-body {
+  padding: 0;
+}

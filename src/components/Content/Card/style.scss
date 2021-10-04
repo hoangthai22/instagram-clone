@@ -1,0 +1,43 @@
+.card__wrap {
+  border: 1px solid rgb(210, 210, 210);
+}
+.ant-card-extra {
+  margin-left: 0;
+}
+.card__img-avatar {
+  width: 40px;
+  border-radius: 50%;
+}
+.ant-card-body {
+  padding: 0;
+}
+.card__body {
+  padding: 12px 12px 12px 12px;
+}
+.hr {
+  border: 1px solid rgb(230, 230, 230);
+}
+.card__formik__wrap {
+  padding: 12px;
+}
+.card__formik__comment {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+
+  .card__input__commnent {
+    margin-left: 4px;
+    width: 100%;
+    border: none;
+  }
+  .card__input__commnent:focus {
+    box-shadow: none;
+  }
+}
+.card__bottom__wrap {
+  margin-top: 8px;
+  .card__bottom__user-content {
+  }
+}
+
+

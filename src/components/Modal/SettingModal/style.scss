@@ -1,0 +1,42 @@
+.modal__setting {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+  align-items: center;
+  border-bottom: 1px solid rgb(200, 200, 200);
+  text-align: center;
+  cursor: pointer;
+}
+.modal__setting:hover {
+  background-color: rgb(230, 230, 230);
+}
+.modal__setting > span {
+  font-size: 1rem;
+}
+body
+  > div:nth-child(9)
+  > div
+  > div.ant-modal-wrap
+  > div
+  > div.ant-modal-content
+  > button {
+  display: none;
+}
+
+body
+  > div:nth-child(9)
+  > div
+  > div.ant-modal-wrap
+  > div
+  > div.ant-modal-content {
+  border-radius: 10px !important;
+  overflow: hidden !important;
+
+}
+ .ant-modal-content{
+  border-radius: 10px;
+  // overflow: hidden;
+}
+
