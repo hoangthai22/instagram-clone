@@ -15,26 +15,29 @@ import "./style.scss";
 const { Text, Paragraph } = Typography;
 
 const Profile = () => {
-  const { setOpenCardModal, setSelectedserId, setOpenAddCardModal, setPostInf, userInf, setListCardProfile, setIconHome, setIconMessage, setIconProfile, openSettingModal, setOpenSettingModal } =
-    useContext(AppContext);
+  const { setOpenCardModal, setSelectedserId, setOpenAddCardModal, setPostInf, userInf, setListCardProfile, setIconHome, setIconMessage, setIconProfile, openSettingModal, setOpenSettingModal } = useContext(AppContext);
   const { user } = useContext(AuthContext);
   const history = useHistory();
   const [userInfomation, setUserInfomation] = useState({});
   const [isFollow, setIsFollow] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [listPost, setListPost] = useState([]);
+  const [isIconSetting, setIsIconSetting] = useState(false);
   // Check if click on Profile and click on Search user
   useEffect(() => {
     if (user?.uid) {
       const { uid } = user;
       if (history.location.state === uid || typeof history.location.state === "undefined") {
         setUserInfomation({ uid });
+        setIsIconSetting(true);
       } else if (history.location.state !== uid && userInf.uid) {
         setUserInfomation({ uid: userInf.uid });
+        setIsIconSetting(false);
       } else {
         setUserInfomation({ uid });
+        setIsIconSetting(true);
       }
-      setIsLoading(true);
+      setIsLoading(true); 
       db.collection("post")
         .where("uid", "==", history.location.state ? history.location.state : uid)
         .orderBy("createdAt")
@@ -136,17 +139,8 @@ const Profile = () => {
 
   return (
     <Content className="content__profile">
-      <Row>
-        <Col
-          xs={{ span: 24, offset: 0 }}
-          sm={{ span: 24, offset: 0 }}
-          md={{ span: 24, offset: 0 }}
-          lg={{ span: 20, offset: 2 }}
-          xl={{ span: 16, offset: 4 }}
-          xxl={{ span: 12, offset: 6 }}
-          className="profile__header"
-          style={{ marginTop: 90 }}
-        >
+      <Row style={{ margin: "0 auto", maxWidth: 950 }}>
+        <Col className="profile__header">
           {/* <div className="profile__container"> */}
           <div className="profile__header__wrap">
             <div className="profile__header__avatar">
@@ -224,6 +218,8 @@ const Profile = () => {
                       marginLeft: 20,
                       fontSize: 23,
                       cursor: "pointer",
+                      display: isIconSetting ? "block" : "none",
+                      alignSelf: "center",
                     }}
                     onClick={() => {
                       setOpenSettingModal(true);
@@ -234,31 +230,29 @@ const Profile = () => {
               <div className="profile__header__info__follow">
                 <Text style={{ fontSize: "1rem" }}>
                   <Text style={{ fontWeight: 500 }}>{posts.length}</Text>
-                  <Text> posts</Text>
+                  <Text> bài viết</Text>
                 </Text>
-                <Text style={{ fontSize: "1rem" }}>
+                <Text style={{ fontSize: "1rem", marginLeft: 40, cursor:"pointer", }}>
                   <Text
                     style={{
                       fontWeight: 500,
-                      marginLeft: 40,
                       marginRight: 5,
                     }}
                   >
                     {users[0]?.listFollower ? users[0].listFollower.length : "0"}
                   </Text>
-                  followers
+                  người theo dõi
                 </Text>
-                <Text style={{ fontSize: "1rem" }}>
+                <Text style={{ fontSize: "1rem", marginLeft: 40, cursor:"pointer", }}>
+                  <Text>đang theo dõi</Text>
                   <Text
                     style={{
                       fontWeight: 500,
-                      marginLeft: 40,
-                      marginRight: 5,
                     }}
                   >
-                    {users[0]?.listFollow ? users[0].listFollow.length : "0"}
+                    {users[0]?.listFollow ? " " + users[0].listFollow.length + " " : "0"}
                   </Text>
-                  following
+                  người dùng
                 </Text>
               </div>
               <div className="profile__header__info__description">
@@ -279,6 +273,7 @@ const Profile = () => {
           </div>
           <div className="mobi-profile__header__info__follow">
             <Text
+              className="profile__header__info__follow__text"
               style={{
                 fontSize: "1rem",
                 display: "flex",
@@ -287,10 +282,12 @@ const Profile = () => {
               }}
             >
               <Text style={{ fontWeight: 500 }}>{posts.length}</Text>
-              <Text style={{ color: "rgb(150,150,150)", fontWeight: 400 }}>posts</Text>
+              <Text style={{ color: "rgb(150,150,150)", fontWeight: 400 }}>bài viết</Text>
             </Text>
             <Text
+              className="profile__header__info__follow__text"
               style={{
+                cursor:"pointer",
                 fontSize: "1rem",
                 display: "flex",
                 flexDirection: "column",
@@ -298,18 +295,22 @@ const Profile = () => {
               }}
             >
               <Text style={{ fontWeight: 500 }}>{users[0]?.listFollower ? users[0].listFollower.length : "0"}</Text>
-              <Text style={{ color: "rgb(150,150,150)", fontWeight: 400 }}>followers</Text>
+              <Text style={{ color: "rgb(150,150,150)", fontWeight: 400 }}>người theo dõi</Text>
             </Text>
             <Text
+              className="profile__header__info__follow__text"
               style={{
+                cursor:"pointer",
                 fontSize: "1rem",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                color: "rgb(150,150,150)",
               }}
             >
+              đang theo dõi
               <Text style={{ fontWeight: 500 }}>{users[0]?.listFollow ? users[0].listFollow.length : "0"}</Text>
-              <Text style={{ color: "rgb(150,150,150)", fontWeight: 400 }}>following</Text>
+              <Text style={{ color: "rgb(150,150,150)", fontWeight: 400 }}>người dùng</Text>
             </Text>
           </div>
           <div className="profile__menu">
@@ -327,11 +328,7 @@ const Profile = () => {
                     return <SkeletonCustom key={i} />;
                   })
                 : listPost?.map((post, index) => (
-                    <div
-                      key={post.postId}
-                      className="profile__card__item"
-                      onClick={() => handleToggleModal(post.userInf, post.imgPost, post.postId, post.content, index, userInfomation.uid, post.postId)}
-                    >
+                    <div key={post.postId} className="profile__card__item" onClick={() => handleToggleModal(post.userInf, post.imgPost, post.postId, post.content, index, userInfomation.uid, post.postId)}>
                       <img className="profile__card__item__img" src={post.imgPost} alt="" />
                       <div className="hover"></div>
                     </div>

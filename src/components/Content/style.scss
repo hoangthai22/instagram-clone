@@ -1,21 +1,21 @@
 .content {
-  overflow-y: scroll;
-
-  height: 100vh;
+  overflow-y: auto;
+  height: calc(100vh - 64px);
+  margin-top: 64px;
   &__container-left {
-    margin-top: 60px;
-    padding-left: 20px;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+    max-width: 650px;
   }
   &__container-right {
-    margin-top: 110px;
-    
+    margin-top: 30px;
     height: 100%;
     display: flex;
+    width: calc(100% - 650px);
     // display: none;
     .content__container-right-wrap {
+      padding-left: 20px;
       position: fixed;
       display: flex;
       width: 300px;
@@ -50,7 +50,8 @@
   //Định dạng của các khối khi màn hình có chiều rộng nhỏ hơn 2000px;
   .content {
     &__container-left {
-      padding-left: 0;
+     max-width: 650px;
+     margin: 0 auto;
     }
     &__container-right {
       display: none;
@@ -62,7 +63,6 @@
   // span={8}
   // offset={6}
 
-
   .ant-col-offset-6 {
     margin-left: 0%;
   }
@@ -72,7 +72,7 @@
     max-width: 100%;
   }
   .card__modal {
-    &__img__wrap{
+    &__img__wrap {
       display: none;
     }
     &__info {

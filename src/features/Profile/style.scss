@@ -1,10 +1,14 @@
 .content__profile {
-  height: 100vh;
+  height: calc(100vh - 64px);
+  margin-top: 64px;
+  overflow-y: scroll;
 }
 .profile__container {
   margin: 0 20px;
 }
 .profile__header {
+  margin-top: 30px;
+  
   &__wrap {
     height: 150px;
     display: flex;
@@ -31,6 +35,7 @@
       display: flex;
       align-items: center;
       &__child {
+        margin-top: 30px;
         display: flex;
       }
     }
@@ -140,6 +145,9 @@
       height: 75px;
     }
   }
+  .profile__header{
+    width: 100%;
+  }
   .profile__card {
     &__list {
       grid-column-gap: 4px !important;
@@ -171,9 +179,12 @@
     max-width: 100%;
   }
 }
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 800px) {
   .profile__container {
     margin: 0;
+  }
+  .profile__header__info__follow__text{
+    font-size: .9rem !important;
   }
   // .profile__header__wrap {
   //   max-height: 20em;
@@ -188,5 +199,10 @@
   // }
   .profile__menu__list {
     gap: 65px;
+  }
+}
+@media screen and (max-width: 951px) {
+  .content__profile{
+    overflow: unset !important;
   }
 }

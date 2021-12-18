@@ -68,16 +68,7 @@ const ChatWindow = (props) => {
     setIsMessage(false);
   };
   return (
-    <Col
-      xs={{ span: 24 }}
-      sm={{ span: 17, offset: 0 }}
-      md={{ span: 17 }}
-      lg={{ span: 16 }}
-      xl={{ span: 11 }}
-      xxl={{ span: 8 }}
-      className={isMessage ? "chatwindow__header active-message" : "chatwindow__header inactive-message"}
-      style={{ marginTop: 90 }}
-    >
+    <Col className={isMessage ? "chatwindow__header active-message" : "chatwindow__header inactive-message"}>
       <div className="chatwindow__header__wrap">
         <div className="chatwindow__header__title">
           <LeftOutlined style={{ marginRight: 10, fontSize: "1.5rem", cursor: "pointer" }} className="leftArrow" onClick={hanldeBackSideBar} />

@@ -88,16 +88,14 @@ const ContentComponent = (props) => {
 
   return (
     <Content className="content" id="list">
-      <Row> 
-        <Col  className="content__container-left" xs={{  }} sm={{  }} md={{ span: 18 ,offset: 3 }} lg={{span: 14 ,offset: 2 }} xl={{span: 10 ,offset: 4}} xxl={{span: 8 ,offset: 6}}>
+      <Row style={{margin: "0 auto", maxWidth: 950}}> 
+        <Col  className="content__container-left">
           {listPost?.map((card, index) => (
             <CardComponent data={card} key={card.postId} />
           ))}
         </Col>
         <Col
-          xs={{  }} sm={{  }} md={{}} lg={{}} xl={{span: 4}} xxl={{span: 8}}
           className="content__container-right"
-          style={{ paddingRight: 20, paddingLeft: 20 }}
         >
           <div className="content__container-right-wrap">
             {user?.photoURL ? (
