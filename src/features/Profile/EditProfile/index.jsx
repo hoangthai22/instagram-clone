@@ -45,17 +45,8 @@ const EditProfile = () => {
 
   return (
     <Content className="content__editProfile">
-      <Row>
-        <Col
-          xs={{ span: 24 }}
-          sm={{ span: 24 }}
-          md={{ span: 16, offset: 4 }}
-          lg={{ span: 13, offset: 5 }}
-          xl={{ span: 11, offset: 6 }}
-          xxl={{ span: 8, offset: 8 }}
-          className="chatwindow__header"
-          style={{ marginTop: 90, overflowY: "none" }}
-        >
+      <Row style={{ margin: "0 auto", maxWidth: 950 }}>
+        <Col className="chatwindow__header" style={{width: "100%"}}>
           <div className="edit__profile__wrap">
             <div className="edit__profile__avatar">
               <Avatar src={user.photoURL} style={{ width: 70, height: 70, marginRight: 20 }}></Avatar>
@@ -92,7 +83,7 @@ const EditProfile = () => {
                             autoComplete="true"
                             readOnly
                           />
-                          <div>
+                          <div style={{width: "100%"}}>
                             <Input
                               type="text"
                               name="name"

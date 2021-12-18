@@ -8,11 +8,12 @@ const { Text } = Typography;
 
 function ListUser() {
   const { user } = useContext(AuthContext);
-  const { selectedUserId, setSelectedserId, members, selectedRoomId, setIsMessage } =
+  const { selectedUserId, setSelectedserId,isMessage, members, selectedRoomId, setIsMessage } =
     useContext(AppContext);
 
   const hanldeSelectRoom = async (id) => {
     setSelectedserId(id);
+    console.log(isMessage);
     setIsMessage(true);
   };
   useEffect(() => {

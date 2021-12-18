@@ -13,14 +13,7 @@ const SideBar = (props) => {
   const { setisInviteMember, isMessage, setIsMessage } = useContext(AppContext);
   return (
     <Col
-      xs={{ span: 24 }}
-      sm={{ span: 7 }}
-      md={{ span: 7 }}
-      lg={{ span: 6, offset: 0 }}
-      xl={{ span: 5, offset: 4}}
-      xxl={{ span: 4, offset: 6 }}
       className={!isMessage ? "sidebar__header active-message" : "sidebar__header inactive-message"}
-      style={{ marginTop: 90 }}
     >
       <div className="sidebar__header__wrap">
         <div className="sidebar__header__title">

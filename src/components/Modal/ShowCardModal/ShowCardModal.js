@@ -1,20 +1,9 @@
-import {
-  HeartOutlined,
-  LeftOutlined,
-  LoadingOutlined,
-  MessageOutlined,
-  RightOutlined,
-  SendOutlined,
-  SmileOutlined,
-} from "@ant-design/icons";
+import { HeartOutlined, LeftOutlined, LoadingOutlined, MessageOutlined, RightOutlined, SendOutlined, SmileOutlined } from "@ant-design/icons";
 import { Avatar, Button, Form, Input, Modal, Spin, Typography } from "antd";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router";
 import { formatDate } from "../../../constants/formatDate";
-import {
-  handleLikeCard,
-  handleUnLikeCard,
-} from "../../../constants/handleLiked";
+import { handleLikeCard, handleUnLikeCard } from "../../../constants/handleLiked";
 import { AppContext } from "../../../Context/AppProvider";
 import { AuthContext } from "../../../Context/AuthProvider";
 import { db } from "../../../firebase/config";
@@ -27,14 +16,7 @@ const Comment = React.lazy(() => import("./Comment"));
 
 const { Text, Paragraph } = Typography;
 export default function ShowCardModal() {
-  const {
-    openCardModal,
-    setOpenCardModal,
-    postInf,
-    setPostInf,
-    listCardProfile,
-    setUserInf,
-  } = useContext(AppContext);
+  const { openCardModal, setOpenCardModal, postInf, setPostInf, listCardProfile, setUserInf } = useContext(AppContext);
   const {
     user: { uid, displayName, photoURL },
   } = useContext(AuthContext);
@@ -42,10 +24,9 @@ export default function ShowCardModal() {
   const [isSubmit, setIsSubmit] = useState(false);
   const [listPostProfile, setListPostProfile] = useState({});
   const [liked, setLiked] = useState(false);
+  const [isArrow, setIsArrow] = useState(false);
   const history = useHistory();
-  const antIcon = <LoadingOutlined style={{ fontSize: 24,}} spin />;
-  
-  
+  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
   const handleComment = (e) => {
     if (e.target.value.length > 0) {
@@ -69,9 +50,11 @@ export default function ShowCardModal() {
 
   useEffect(() => {
     setListPostProfile(postInf);
-    
+    if (history.location.pathname === "/") {
+      setIsArrow(false);
+    } else setIsArrow(true);
   }, [postInf]);
-  
+
   const commentsCondition = useMemo(() => {
     return {
       fieldName: "postId",
@@ -86,22 +69,16 @@ export default function ShowCardModal() {
   // Next and prev Card
   const hanldeChangeCard = async (position) => {
     let index = listPostProfile.index;
-    console.log("index", index);
-    console.log("position", position);
     if (position === "right") {
       index = index + 1;
     } else {
       index = index - 1;
     }
-    console.log("index After", index);
-    console.log("listCardProfile.length", listCardProfile);
     if (index > listCardProfile.length - 1 || index < 0) {
       return;
     } else {
       listCardProfile.map((item, ind) => {
         if (ind === index) {
-          console.log("ind", ind);
-          console.log("item", item);
           const post = { ...item, index };
           setListPostProfile(post);
         }
@@ -123,9 +100,7 @@ export default function ShowCardModal() {
     } else {
       setLiked(false);
     }
-    
   }, [countLikedCard]);
-  // console.log({postInf});
   const hanldeLike = async () => {
     if (liked) {
       await handleUnLikeCard(listPostProfile.postId, uid, displayName, photoURL);
@@ -135,7 +110,7 @@ export default function ShowCardModal() {
       setLiked(true);
     }
   };
-  
+
   // redirect to profile page with uid
   const hanldeSearch = () => {
     setUserInf({
@@ -148,47 +123,24 @@ export default function ShowCardModal() {
   };
   return (
     <div>
-      <Modal
-        centered
-        visible={openCardModal}
-        onOk={() => setOpenCardModal(false)}
-        onCancel={() => setOpenCardModal(false)}
-        width={1000}
-        footer={null}
-        style={{ padding: 0 }}
-        closable={false}
-      >
+      <Modal centered visible={openCardModal} onOk={() => setOpenCardModal(false)} onCancel={() => setOpenCardModal(false)} width={1000} footer={null} style={{ padding: 0 }} closable={false}>
         <div className="card__modal__wrap">
-          <div className="card__modal__wrap__after">
-            <LeftOutlined onClick={() => hanldeChangeCard("left")} />
-          </div>
+          {isArrow ? (
+            <div className="card__modal__wrap__after">
+              <LeftOutlined onClick={() => hanldeChangeCard("left")} />
+            </div>
+          ) : (
+            ""
+          )}
           <div className="card__modal__img__wrap">
-            <img
-              className="card__modal__img"
-              src={listPostProfile.imgPost}
-              alt=""
-            />
+            <img className="card__modal__img" src={listPostProfile.imgPost} alt="" />
           </div>
           <div className="card__modal__info">
             <div className="card__modal__info__header">
-              <Avatar
-                size="default"
-                style={{ cursor: "pointer" }}
-                onClick={hanldeSearch}
-                src={
-                  listPostProfile?.userInf
-                    ? listPostProfile?.userInf?.img
-                    : listPostProfile.img
-                }
-              />
+              <Avatar size="default" style={{ cursor: "pointer" }} onClick={hanldeSearch} src={listPostProfile?.userInf ? listPostProfile?.userInf?.img : listPostProfile.img} />
               <div className="card__modal__info__header__right">
-                <Text
-                  style={{ fontWeight: 500, cursor: "pointer" }}
-                  onClick={hanldeSearch}
-                >
-                  {listPostProfile?.userInf
-                    ? listPostProfile?.userInf?.displayName
-                    : listPostProfile.displayName}
+                <Text style={{ fontWeight: 500, cursor: "pointer" }} onClick={hanldeSearch}>
+                  {listPostProfile?.userInf ? listPostProfile?.userInf?.displayName : listPostProfile.displayName}
                 </Text>
                 <Text
                   style={{
@@ -206,22 +158,10 @@ export default function ShowCardModal() {
               {/* Tieu de bai post */}
               <div style={{ display: "flex", marginBottom: 40 }}>
                 <div>
-                  <Avatar
-                    onClick={hanldeSearch}
-                    size="default"
-                    style={{ cursor: "pointer" }}
-                    src={
-                      listPostProfile?.userInf
-                        ? listPostProfile?.userInf?.img
-                        : listPostProfile.img
-                    }
-                  />
+                  <Avatar onClick={hanldeSearch} size="default" style={{ cursor: "pointer" }} src={listPostProfile?.userInf ? listPostProfile?.userInf?.img : listPostProfile.img} />
                 </div>
                 <div className="card__modal__info__content__post">
-                  <Paragraph
-                    style={{ marginBottom: 0, marginLeft: 10 }}
-                    ellipsis={{ rows: 2, expandable: true, symbol: "Thêm" }}
-                  >
+                  <Paragraph style={{ marginBottom: 0, marginLeft: 10 }} ellipsis={{ rows: 2, expandable: true, symbol: "Thêm" }}>
                     <Text
                       onClick={hanldeSearch}
                       style={{
@@ -230,9 +170,7 @@ export default function ShowCardModal() {
                         marginRight: 8,
                       }}
                     >
-                      {listPostProfile?.userInf
-                        ? listPostProfile?.userInf?.displayName
-                        : listPostProfile.displayName}
+                      {listPostProfile?.userInf ? listPostProfile?.userInf?.displayName : listPostProfile.displayName}
                     </Text>
                     {listPostProfile.content}
                   </Paragraph>
@@ -240,13 +178,15 @@ export default function ShowCardModal() {
               </div>
               {/* end */}
               {/* comment start */}
-              <React.Suspense fallback={<div style={{display:"flex", justifyContent:"center"}}><Spin indicator={antIcon}/></div>}>
+              <React.Suspense
+                fallback={
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Spin indicator={antIcon} />
+                  </div>
+                }
+              >
                 {comments?.map((comment) => (
-                  <Comment
-                    commentInf={comment}
-                    key={comment.commentText}
-                    onClick={hanldeSearch}
-                  />
+                  <Comment commentInf={comment} key={comment.commentText} onClick={hanldeSearch} />
                 ))}
               </React.Suspense>
 
@@ -286,12 +226,8 @@ export default function ShowCardModal() {
                     ""
                   )}
                 </div>
-                <MessageOutlined
-                  style={{ fontSize: 25, marginLeft: 22, cursor: "pointer" }}
-                />
-                <SendOutlined
-                  style={{ fontSize: 25, marginLeft: 22, cursor: "pointer" }}
-                />
+                <MessageOutlined style={{ fontSize: 25, marginLeft: 22, cursor: "pointer" }} />
+                <SendOutlined style={{ fontSize: 25, marginLeft: 22, cursor: "pointer" }} />
               </div>
               <div
                 style={{
@@ -324,15 +260,7 @@ export default function ShowCardModal() {
               </div>
               <Form className="card__formik__comment">
                 <SmileOutlined style={{ fontSize: 25, marginLeft: 10 }} />
-                <Input
-                  type="text"
-                  name="comment"
-                  className="card__input__commnent"
-                  placeholder="Thêm bình luận..."
-                  onChange={handleComment}
-                  value={inputText}
-                  autoComplete="false"
-                />
+                <Input type="text" name="comment" className="card__input__commnent" placeholder="Thêm bình luận..." onChange={handleComment} value={inputText} autoComplete="false" />
                 <Button
                   style={{
                     fontSize: "1rem",
@@ -341,9 +269,7 @@ export default function ShowCardModal() {
                     cursor: "pointer",
                     border: "none",
                     backgroundColor: "#fff",
-                    color: `${
-                      !isSubmit ? "rgba(180,180,180, 0.7)" : "#0095f6"
-                    }`,
+                    color: `${!isSubmit ? "rgba(180,180,180, 0.7)" : "#0095f6"}`,
                   }}
                   disabled={!isSubmit}
                   onClick={hanldeSubmit}
@@ -353,9 +279,13 @@ export default function ShowCardModal() {
               </Form>
             </div>
           </div>
-          <div className="card__modal__wrap__before">
-            <RightOutlined onClick={() => hanldeChangeCard("right")} />
-          </div>
+          {isArrow ? (
+            <div className="card__modal__wrap__before">
+              <RightOutlined onClick={() => hanldeChangeCard("right")} />
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </Modal>
     </div>

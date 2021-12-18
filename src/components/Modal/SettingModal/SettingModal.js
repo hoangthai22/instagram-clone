@@ -44,6 +44,7 @@ export const SettingModal = () => {
           className="modal__setting"
           onClick={() => {
             history.push("/edit");
+            setOpenSettingModal(false);
           }}
         >
           <span>Đổi mật khẩu</span>

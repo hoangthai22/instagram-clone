@@ -1,6 +1,7 @@
 .content__editProfile{
-  height: 100vh;
+  height: calc(100vh - 64px);
   min-width: 69vh;
+  margin-top: 64px;
 }
 .edit__profile {
   &__wrap {

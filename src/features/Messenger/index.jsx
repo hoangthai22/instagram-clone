@@ -16,15 +16,9 @@ const Messenger = () => {
   },[]);
   return (
     <Content className="content__messenger">
-      <Row>
+      <Row className="content__messenger__row" > 
         <Col
-          xs={{ span: 24, offset: 0 }}
-          sm={{ span: 24, offset: 0 }}
-          md={{ span: 24, offset: 0 }}
-          lg={{ span: 24, offset: 2 }}
-          xl={{ span: 24, offset: 0 }}
-          xxl={{ span: 24, offset: 0 }}
-          style={{ display: "flex" }}
+          style={{ display: "flex", width: "100%" }}
         >
           <SideBar className="sideBar__mobile"/>
           <ChatWindow className="chatwindow__mobile"/>

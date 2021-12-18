@@ -366,16 +366,10 @@ const HeaderComponent = () => {
   return (
     <div className="header-wrap">
       <Header className="header">
-        <Row>
+        <Row style={{margin: "0 auto", maxWidth: 950}}>
           <Col
             flex
             className="header__container"
-            xs={{ span: 24, offset: 0 }}
-            sm={{ span: 24, offset: 0 }}
-            md={{ span: 24, offset: 0 }}
-            lg={{ span: 20, offset: 2 }}
-            xl={{ span: 16, offset: 4 }}
-            xxl={{ span: 12, offset: 6 }}
           >
             <div className="header__Logo-img">
               <img src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png" alt="" className="header__img" />
