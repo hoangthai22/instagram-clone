@@ -23,7 +23,14 @@
   &__userInfo {
     display: flex;
     flex-direction: column;
+    
+    &__displayName{
+      font-weight: bold;
+    }
   }
+}
+.isSeen{
+  font-weight: unset;
 }
 .active {
   background-color: rgb(240, 240, 240);
@@ -36,3 +43,4 @@
   margin-right: 10px;
   border-radius: 50%;
 }
+

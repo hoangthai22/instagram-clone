@@ -1,8 +1,9 @@
-import { FlagOutlined, HomeFilled, HomeOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons";
+import { FlagOutlined, HomeFilled, HomeOutlined, SearchOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Col, Dropdown, Form, Layout, Menu, Row, Select, Spin, Typography } from "antd";
 import { debounce } from "lodash";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { MODAL_MODE_SEARCH_USER } from "../../constants/modalMode";
 import { AppContext } from "../../Context/AppProvider";
 import { AuthContext } from "../../Context/AuthProvider";
 import { auth, db } from "../../firebase/config";
@@ -13,7 +14,23 @@ const { Text } = Typography;
 
 const HeaderComponent = () => {
   const { user, setUser } = useContext(AuthContext);
-  const { iconHome, iconMessage, selectedRoomId, setUserInf, setHaveHeader, messageNofi, setIconHome, setIconMessage, iconProfile, setIconProfile } = useContext(AppContext);
+  const {
+    iconHome,
+    iconMessage,
+    selectedRoomId,
+    setUserInf,
+    setHaveHeader,
+    messageNofi,
+    setIconHome,
+    setIconMessage,
+    iconProfile,
+    setIconProfile,
+    setisInviteMember,
+    isShowModalMode,
+    setIsShowModalMode,
+    isIconNofiDropdown,
+    setIsIconNofiDropdown,
+  } = useContext(AppContext);
   const [value, setValue] = useState([]);
   const [isNofi, setIsNofi] = useState([]);
   const [isNofiAfterMerge, setIsNofiAfterMerge] = useState([]);
@@ -21,6 +38,7 @@ const HeaderComponent = () => {
   const [isNofiIcon, setIsNofiIcon] = useState(false);
   const [iconNofi, setIsIconNofi] = useState(false);
   const [pageCurrent, setPageCurrent] = useState("");
+  const [isNofiDropdown, setIsNofiDropdown] = useState(false);
   const [form] = Form.useForm();
 
   const {
@@ -57,16 +75,6 @@ const HeaderComponent = () => {
   // Call function to get data from firestores
   const nofications = useFireStore("users", noficationCondition);
 
-  // const userNofiCondition = useMemo(() => {
-  //   return {
-  //     fieldName: "uid",
-  //     operator: "in",
-  //     compareValue: nofications[0]?.listFollower,
-  //   };
-  // }, [nofications]);
-
-  // const userNofi = useFireStore("users", userNofiCondition);
-
   const likeNofiCondition = useMemo(() => {
     return {
       fieldName: "uid",
@@ -81,12 +89,20 @@ const HeaderComponent = () => {
     if (!nofications[0]?.nofication) {
       setIsNofiIcon(true);
     }
-    // setTimeout(() => {
-    //   setIsNofiIcon(false);
-    // }, 5000);
     const list = messageNofi.filter((item) => item);
     setIsNofi(list);
-  }, [messageNofi, selectedRoomId, nofications]);
+    setIsIconNofi(isIconNofiDropdown);
+    //disable dropdown nofi when width < 600px
+    handleResize();
+    function handleResize() {
+      if (window.innerWidth < 600) {
+        setIsNofiDropdown(false);
+      } else {
+        setIsNofiDropdown(true);
+      }
+    }
+    window.addEventListener("resize", handleResize);
+  }, [messageNofi, selectedRoomId, nofications, isIconNofiDropdown]);
 
   useEffect(() => {
     if (nofications[0]?.listFollower?.some((item) => item.uid === uid)) {
@@ -171,8 +187,8 @@ const HeaderComponent = () => {
         left: 30,
         padding: 8,
         overflowY: "scroll",
-
         boxShadow: "0 0 5px 1px rgb(0 0 0 / 20%)",
+        display: isNofiDropdown ? "block" : "none",
       }}
       className="nofication__mobile"
     >
@@ -182,7 +198,7 @@ const HeaderComponent = () => {
             return (
               <Menu.Item key={item.createdAtFollow} style={{ flexShrink: 0, height: 68, padding: 0 }}>
                 <div style={{ display: "flex" }} className="nofi__wrap__mobile">
-                  <Avatar src={item.photoURL} style={{ width: 40, height: 40, marginRight: 10, flexShrink:0 }}></Avatar>
+                  <Avatar src={item.photoURL} style={{ width: 40, height: 40, marginRight: 10, flexShrink: 0 }}></Avatar>
                   <Text style={{ flex: 1 }} className="nofi__text__mobile">
                     {item?.displayName} đã bắt đầu theo dõi bạn
                     <span></span>
@@ -231,13 +247,13 @@ const HeaderComponent = () => {
                               ? item?.userLiked[item?.userLiked.length - 1].photoURL
                               : item?.userLiked[item?.userLiked.length - 2].photoURL
                           }
-                          style={{ width: 40, height: 40, marginRight: 10, flexShrink:0 }}
+                          style={{ width: 40, height: 40, marginRight: 10, flexShrink: 0 }}
                           className="nofi__avatar__mobile"
                         ></Avatar>
                       ) : item?.userLiked[0].uid === uid ? (
                         ""
                       ) : (
-                        <Avatar src={item?.userLiked[0].photoURL} style={{ width: 40, height: 40, marginRight: 10, flexShrink:0 }}></Avatar>
+                        <Avatar src={item?.userLiked[0].photoURL} style={{ width: 40, height: 40, marginRight: 10, flexShrink: 0 }}></Avatar>
                       )}
 
                       {item?.userLiked.length > 1 ? (
@@ -339,38 +355,41 @@ const HeaderComponent = () => {
     setValue([]);
   };
   const handleIconNofi = () => {
-    setIsIconNofi(!iconNofi);
-    if (iconHome) {
-      setPageCurrent("home");
-    } else if (iconMessage) {
-      setPageCurrent("chat");
-    } else if (iconProfile) {
-      setPageCurrent("profile");
-    }
-
-    if (!iconNofi) {
-      setIconHome(false);
-      setIconMessage(false);
+    if (!isNofiDropdown) {
+      history.push("/nofication");
     } else {
-      if (pageCurrent === "home") {
-        setIconHome(true);
-      } else if (pageCurrent === "chat") {
-        setIconMessage(true);
-      } else if (pageCurrent === "profile") {
-        setIconProfile(true);
+      setIsIconNofi(!iconNofi);
+      if (iconHome) {
+        setPageCurrent("home");
+      } else if (iconMessage) {
+        setPageCurrent("chat");
+      } else if (iconProfile) {
+        setPageCurrent("profile");
+      }
+
+      if (!iconNofi) {
+        setIconHome(false);
+        setIconMessage(false);
+      } else {
+        if (pageCurrent === "home") {
+          setIconHome(true);
+        } else if (pageCurrent === "chat") {
+          setIconMessage(true);
+        } else if (pageCurrent === "profile") {
+          setIconProfile(true);
+        }
       }
     }
-    // iconHome
-    // iconMessage
+  };
+  const handleShowModalSearch = () => {
+    setisInviteMember(true);
+    setIsShowModalMode(MODAL_MODE_SEARCH_USER);
   };
   return (
     <div className="header-wrap">
       <Header className="header">
-        <Row style={{margin: "0 auto", maxWidth: 950}}>
-          <Col
-            flex
-            className="header__container"
-          >
+        <Row style={{ margin: "0 auto", maxWidth: 950 }}>
+          <Col flex className="header__container">
             <div className="header__Logo-img">
               <img src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png" alt="" className="header__img" />
             </div>
@@ -388,8 +407,8 @@ const HeaderComponent = () => {
                 />
               </Form>
             </div>
-
             <div className="header__btns">
+              <SearchOutlined style={{ fontSize: 25, marginLeft: 22, cursor: "pointer" }} className="header__search__btn" onClick={handleShowModalSearch} />
               {iconHome ? (
                 <HomeFilled
                   style={{ fontSize: 25, marginLeft: 22 }}

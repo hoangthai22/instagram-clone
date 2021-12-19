@@ -15,7 +15,8 @@ import "./style.scss";
 const { Text, Paragraph } = Typography;
 
 const Profile = () => {
-  const { setOpenCardModal, setSelectedserId, setOpenAddCardModal, setPostInf, userInf, setListCardProfile, setIconHome, setIconMessage, setIconProfile, openSettingModal, setOpenSettingModal } = useContext(AppContext);
+  const { setOpenCardModal, setSelectedserId, setIsIconNofiDropdown, setOpenAddCardModal, setPostInf, userInf, setListCardProfile, setIconHome, setIconMessage, setIconProfile, openSettingModal, setOpenSettingModal } =
+    useContext(AppContext);
   const { user } = useContext(AuthContext);
   const history = useHistory();
   const [userInfomation, setUserInfomation] = useState({});
@@ -37,7 +38,7 @@ const Profile = () => {
         setUserInfomation({ uid });
         setIsIconSetting(true);
       }
-      setIsLoading(true); 
+      setIsLoading(true);
       db.collection("post")
         .where("uid", "==", history.location.state ? history.location.state : uid)
         .orderBy("createdAt")
@@ -77,6 +78,7 @@ const Profile = () => {
     setIconProfile(true);
     setIconMessage(false);
     setIconHome(false);
+    setIsIconNofiDropdown(false);
   }, [posts]);
 
   // Set follow button
@@ -232,7 +234,7 @@ const Profile = () => {
                   <Text style={{ fontWeight: 500 }}>{posts.length}</Text>
                   <Text> bài viết</Text>
                 </Text>
-                <Text style={{ fontSize: "1rem", marginLeft: 40, cursor:"pointer", }}>
+                <Text style={{ fontSize: "1rem", marginLeft: 40, cursor: "pointer" }}>
                   <Text
                     style={{
                       fontWeight: 500,
@@ -243,7 +245,7 @@ const Profile = () => {
                   </Text>
                   người theo dõi
                 </Text>
-                <Text style={{ fontSize: "1rem", marginLeft: 40, cursor:"pointer", }}>
+                <Text style={{ fontSize: "1rem", marginLeft: 40, cursor: "pointer" }}>
                   <Text>đang theo dõi</Text>
                   <Text
                     style={{
@@ -287,7 +289,7 @@ const Profile = () => {
             <Text
               className="profile__header__info__follow__text"
               style={{
-                cursor:"pointer",
+                cursor: "pointer",
                 fontSize: "1rem",
                 display: "flex",
                 flexDirection: "column",
@@ -300,7 +302,7 @@ const Profile = () => {
             <Text
               className="profile__header__info__follow__text"
               style={{
-                cursor:"pointer",
+                cursor: "pointer",
                 fontSize: "1rem",
                 display: "flex",
                 flexDirection: "column",
