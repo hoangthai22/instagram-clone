@@ -33,6 +33,8 @@ export default function AuthProvider({ children }) {
                 history.push("/chat");
               } else if (history.location.pathname === "/edit") {
                 history.push("/edit");
+              } else if (history.location.pathname === "/nofication" && window.innerWidth < 600) {
+                history.push("/nofication");
               } else {
                 history.push("/");
               }

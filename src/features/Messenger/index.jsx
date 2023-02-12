@@ -7,12 +7,13 @@ import "./style.scss";
 const { Content } = Layout;
 
 const Messenger = () => {
-  const { setIconHome, setIconMessage, setIconProfile } = useContext(AppContext);
+  const { setIconHome, setIconMessage, setIconProfile , setIsIconNofiDropdown} = useContext(AppContext);
 
   useEffect(() => {
     setIconHome(false);
     setIconMessage(true);
     setIconProfile(false);
+    setIsIconNofiDropdown(false);
   },[]);
   return (
     <Content className="content__messenger">

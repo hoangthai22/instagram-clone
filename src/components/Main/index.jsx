@@ -7,6 +7,7 @@ import Profile from "../../features/Profile";
 import EditProfile from "../../features/Profile/EditProfile";
 import ContentComponent from "../Content";
 import HeaderComponent from "../Header";
+import NoficationMobile from "../Nofication/NoficationMobile";
 
 function Main() {
   const history = useHistory();
@@ -32,6 +33,7 @@ function Main() {
         <Route path={`${match.url}chat`} component={Messenger} />
         <Route path={`${match.url}edit`} component={EditProfile} />
         <Route path={`${match.url}profile`} component={Profile} />
+        <Route path={`${match.url}nofication`} component={NoficationMobile} />
         {/* <Route component={NotFound} /> */}
       </Switch>
     </div>

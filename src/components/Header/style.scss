@@ -133,6 +133,8 @@ body > div:nth-child(8) > div > div > div.ant-dropdown-arrow {
   position: absolute;
   top: -9px;
   left: 8px;
+
+  display: none;
 }
 #heart {
   position: relative;
@@ -176,9 +178,15 @@ body > div:nth-child(8) > div > div > div.ant-dropdown-arrow {
   flex-flow: column-reverse;
   
 }
+.header__search__btn{
+  display: none;
+}
 @media screen and (max-width: 600px) {
   .header__input {
     display: none;
+  }
+  .header__search__btn{
+    display: block;
   }
 }
 @media screen and (max-width: 1600px) {

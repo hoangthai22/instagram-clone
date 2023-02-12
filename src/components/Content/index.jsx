@@ -12,7 +12,7 @@ const { Text } = Typography;
 
 const ContentComponent = (props) => {
   const { user, setUser } = useContext(AuthContext);
-  const { setIconHome, setIconMessage, setIsLoading, setIconProfile } = useContext(AppContext);
+  const { setIconHome, setIconMessage, setIsLoading, setIconProfile, setIsIconNofiDropdown } = useContext(AppContext);
   const [listPost, setListPost] = useState([]);
   const [lastPost, setLastPost] = useState({});
   const [loadMore, setLoadMore] = useState(true);
@@ -28,6 +28,7 @@ const ContentComponent = (props) => {
       setIconHome(true);
       setIconMessage(false);
       setIconProfile(false);
+      setIsIconNofiDropdown(false);
       db.collection("post")
         .orderBy("createdAt", "desc")
         .where("uid", "in", newListFollow)

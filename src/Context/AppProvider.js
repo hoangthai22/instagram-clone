@@ -13,6 +13,7 @@ export default function AppProvider({ children }) {
   const [iconHome, setIconHome] = useState(false);
   const [iconMessage, setIconMessage] = useState(false);
   const [iconProfile, setIconProfile] = useState(false);
+  const [isIconNofiDropdown, setIsIconNofiDropdown] = useState(false);
   const [openCardModal, setOpenCardModal] = useState(false);
   const [openAddCardModal, setOpenAddCardModal] = useState(false);
   const [postInf, setPostInf] = useState({});
@@ -25,6 +26,8 @@ export default function AppProvider({ children }) {
   const [isValidAuth, setIsValidAuth] = useState(false);
   const [openSettingModal, setOpenSettingModal] = useState(false);
   const [openChangeAvatarModal, setOpenChangeAvatarModal] = useState(false);
+  const [isShowModalMode, setIsShowModalMode] = useState("Search" || "Invite");
+
   const {
     user: { uid },
   } = useContext(AuthContext);
@@ -88,9 +91,11 @@ export default function AppProvider({ children }) {
       operator: "==",
       compareValue: uid,
     }),
-    [uid],
+    [uid]
   );
   const messageNofi = useFireStoreToListenNofiMessage("nofications", roomCondition);
+
+  const messageNofiIsSeen = useFireStore("nofications", roomCondition);
 
   const condition = useMemo(
     () => ({
@@ -98,11 +103,29 @@ export default function AppProvider({ children }) {
       operator: "==",
       compareValue: selectedRoomId.filter((i) => i.length > 0).toString(),
     }),
-    [selectedRoomId],
+    [selectedRoomId]
   );
 
   const messages = useFireStore("messages", condition);
 
+  const membersIsSeen = useMemo(() => {
+    let member = [...members];
+    member = member.map((i) => {
+      return {
+        ...i,
+        isSeenMessage: true,
+      };
+    });
+
+    let nofis = [...messageNofiIsSeen];
+    for (let index = 0; index < member.length; index++) {
+      if (uid === nofis[index]?.uid && !nofis[index].seen) {
+        member[index].isSeenMessage = false;
+      }
+    }
+    return member;
+    // console.log({nofis});
+  }, [members, messageNofiIsSeen, uid]);
   return (
     <AppContext.Provider
       value={{
@@ -148,6 +171,11 @@ export default function AppProvider({ children }) {
         setOpenSettingModal,
         openChangeAvatarModal,
         setOpenChangeAvatarModal,
+        membersIsSeen,
+        isShowModalMode,
+        setIsShowModalMode,
+        isIconNofiDropdown,
+        setIsIconNofiDropdown,
       }}
     >
       {children}
